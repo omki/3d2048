@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class CubeBehaviour : MonoBehaviour
 {
@@ -12,24 +15,11 @@ public class CubeBehaviour : MonoBehaviour
     public bool merging { get; set; }
     bool animationMerging = false;
     public static float spawnSpeed;
-    public bool selfDestruct { get;  set; }    
+    public bool selfDestruct { get; set; }
+    public Texture[] m_MainTexture;
+    public Texture[] m_Textures;
 
-    Dictionary<int, string> colors = new Dictionary<int, string>()
-    {
-        {2, "#eee4da"},
-        {4, "#ede0c8"},
-        {8, "#f2b179"},
-        {16, "#f59563"},
-        {32, "#f67c5f"},
-        {64, "#f95c30"},
-        {128, "#edce68"},
-        {256, "#eecd57"},
-        {512, "#eec943"},
-        {1024, "#eec62c"},
-        {2048, "#eec308"}
-    };
-
-	void Start ()
+    void Start ()
     {
         destPos = transform.position;
         oldPos = transform.position;
@@ -53,16 +43,13 @@ public class CubeBehaviour : MonoBehaviour
             TextMesh text = (TextMesh)child;
             text.text = val.ToString();
             text.characterSize = size;
-            if (val > 4)
-                text.GetComponent<Renderer>().material.color = col;
+            text.GetComponent<Renderer>().material.color = col;
         }
-        string colStr = "#000000";
-        if (val <= 2048)
-            colStr = colors[val];
-        //print(colStr);
-        ColorUtility.TryParseHtmlString(colStr, out col);
-        GetComponent<Renderer>().material.color = col;
+
         value = val;
+
+        int textureIndex = (int)Math.Log(val, 2) - 1;
+        GetComponent<Renderer>().material.mainTexture = m_MainTexture[textureIndex];
     }
 
     public void SetTarget(Vector3 dest, Transform replace = null)
