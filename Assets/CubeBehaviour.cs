@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class CubeBehaviour : MonoBehaviour
 {
@@ -12,7 +15,8 @@ public class CubeBehaviour : MonoBehaviour
     public bool merging { get; set; }
     bool animationMerging = false;
     public static float spawnSpeed;
-    public bool selfDestruct { get;  set; }    
+    public bool selfDestruct { get; set; }
+    public Texture[] m_MainTexture;
 
     Dictionary<int, string> colors = new Dictionary<int, string>()
     {
@@ -29,7 +33,22 @@ public class CubeBehaviour : MonoBehaviour
         {2048, "#eec308"}
     };
 
-	void Start ()
+    Dictionary<int, string> textures = new Dictionary<int, string>()
+    {
+        {2, "ca"},
+        {4, "fr"},
+        {8, "dk"},
+        {16, "#f59563"},
+        {32, "#f67c5f"},
+        {64, "#f95c30"},
+        {128, "#edce68"},
+        {256, "#eecd57"},
+        {512, "#eec943"},
+        {1024, "#eec62c"},
+        {2048, "#eec308"}
+    };
+
+    void Start ()
     {
         destPos = transform.position;
         oldPos = transform.position;
@@ -53,16 +72,28 @@ public class CubeBehaviour : MonoBehaviour
             TextMesh text = (TextMesh)child;
             text.text = val.ToString();
             text.characterSize = size;
-            if (val > 4)
-                text.GetComponent<Renderer>().material.color = col;
+            text.GetComponent<Renderer>().material.color = col;
         }
-        string colStr = "#000000";
+        string colStr = "#eec308";
         if (val <= 2048)
             colStr = colors[val];
         //print(colStr);
         ColorUtility.TryParseHtmlString(colStr, out col);
-        GetComponent<Renderer>().material.color = col;
-        value = val;
+        //GetComponent<Renderer>().material.color = col;
+        //value = val;
+        //yourMethod(val.ToString());
+
+        //GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        //Material quadMaterial = (Material)Resources.Load("Whatever");
+        //GetComponent<Renderer>().material = quadMaterial;
+        //Texture2D myTexture = Resources.Load("my_image") as Texture2D;
+        //Debug.Log(m_MainTexture.name);
+        //m_MainTexture. = "Tile32-0000";
+        Debug.Log(val);
+
+        int textureIndex = (int)Math.Log(val, 2) - 1;
+        Debug.Log(textureIndex);
+        GetComponent<Renderer>().material.mainTexture = m_MainTexture[textureIndex];
     }
 
     public void SetTarget(Vector3 dest, Transform replace = null)
