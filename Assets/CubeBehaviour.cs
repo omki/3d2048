@@ -17,36 +17,7 @@ public class CubeBehaviour : MonoBehaviour
     public static float spawnSpeed;
     public bool selfDestruct { get; set; }
     public Texture[] m_MainTexture;
-
-    Dictionary<int, string> colors = new Dictionary<int, string>()
-    {
-        {2, "#eee4da"},
-        {4, "#ede0c8"},
-        {8, "#f2b179"},
-        {16, "#f59563"},
-        {32, "#f67c5f"},
-        {64, "#f95c30"},
-        {128, "#edce68"},
-        {256, "#eecd57"},
-        {512, "#eec943"},
-        {1024, "#eec62c"},
-        {2048, "#eec308"}
-    };
-
-    Dictionary<int, string> textures = new Dictionary<int, string>()
-    {
-        {2, "ca"},
-        {4, "fr"},
-        {8, "dk"},
-        {16, "#f59563"},
-        {32, "#f67c5f"},
-        {64, "#f95c30"},
-        {128, "#edce68"},
-        {256, "#eecd57"},
-        {512, "#eec943"},
-        {1024, "#eec62c"},
-        {2048, "#eec308"}
-    };
+    public Texture[] m_Textures;
 
     void Start ()
     {
@@ -74,25 +45,10 @@ public class CubeBehaviour : MonoBehaviour
             text.characterSize = size;
             text.GetComponent<Renderer>().material.color = col;
         }
-        string colStr = "#eec308";
-        if (val <= 2048)
-            colStr = colors[val];
-        //print(colStr);
-        ColorUtility.TryParseHtmlString(colStr, out col);
-        //GetComponent<Renderer>().material.color = col;
-        //value = val;
-        //yourMethod(val.ToString());
 
-        //GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        //Material quadMaterial = (Material)Resources.Load("Whatever");
-        //GetComponent<Renderer>().material = quadMaterial;
-        //Texture2D myTexture = Resources.Load("my_image") as Texture2D;
-        //Debug.Log(m_MainTexture.name);
-        //m_MainTexture. = "Tile32-0000";
-        Debug.Log(val);
+        value = val;
 
         int textureIndex = (int)Math.Log(val, 2) - 1;
-        Debug.Log(textureIndex);
         GetComponent<Renderer>().material.mainTexture = m_MainTexture[textureIndex];
     }
 
